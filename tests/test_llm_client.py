@@ -54,6 +54,14 @@ def test_auto_provider_uses_first_configured_supported_key(monkeypatch):
     assert status() == "LLM: Groq"
 
 
+def test_offline_provider_ignores_configured_keys(monkeypatch):
+    monkeypatch.setenv("LLM_PROVIDER", "offline")
+    monkeypatch.setenv("GOOGLE_API_KEY", "test-key")
+
+    assert get_llm() is None
+    assert status() == "LLM: offline mode (explicitly disabled)."
+
+
 def test_get_llm_rejects_unsupported_provider(monkeypatch):
     monkeypatch.setenv("LLM_PROVIDER", "unsupported-provider")
 

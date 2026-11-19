@@ -13,10 +13,12 @@ _PROVIDERS = {
 
 def _selected_provider() -> str | None:
     provider = os.getenv("LLM_PROVIDER", "google").strip().lower() or "google"
+    if provider == "offline":
+        return None
     if provider == "auto":
         return next((name for name, (key, _, _) in _PROVIDERS.items() if os.getenv(key)), None)
     if provider not in _PROVIDERS:
-        raise ValueError(f"Unsupported LLM_PROVIDER: {provider}. Choose google, groq, openrouter, or auto.")
+        raise ValueError(f"Unsupported LLM_PROVIDER: {provider}. Choose google, groq, openrouter, auto, or offline.")
     return provider
 
 
@@ -70,6 +72,8 @@ def ask_json(llm, system: str, user: str) -> dict | None:
 
 
 def status() -> str:
+    if os.getenv("LLM_PROVIDER", "").strip().lower() == "offline":
+        return "LLM: offline mode (explicitly disabled)."
     provider = _selected_provider()
     if provider is None:
         return "LLM: offline mode (no supported provider key configured)."
