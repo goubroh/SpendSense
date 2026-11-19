@@ -258,8 +258,8 @@ Docker Compose starts FastAPI and Streamlit together, shares a named data volume
 docker compose up --build
 ```
 
-- Dashboard: <http://127.0.0.1:8501>
-- API docs: <http://127.0.0.1:8000/docs>
+- Dashboard: <http://127.0.0.1:8004>
+- API docs: <http://127.0.0.1:8004/docs>
 
 These are Docker's host ports; they differ from the current local development ports above. If they are occupied, stop the conflicting processes or change the host-side port mappings. `docker compose down --volumes` also deletes the Compose-managed transactions and reports.
 
